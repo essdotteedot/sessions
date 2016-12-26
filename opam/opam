@@ -1,0 +1,30 @@
+opam-version: "1.2"
+name: "sessions"
+version: "0.1.0"
+maintainer: "essdotteedot <essdotteedot@gmail.com>"
+authors: [ "essdotteedot <essdotteedot@gmail.com>" ]
+license: "MIT"
+homepage: "https://github.com/essdotteedot/sessions"
+dev-repo: "https://github.com/essdotteedot/sessions.git"
+bug-reports: "https://github.com/essdotteedot/sessions/issues"
+build: [
+  ["ocaml" "setup.ml" "-configure" "--prefix" prefix "--%{lwt:enable}%-lwt"]
+  ["ocaml" "setup.ml" "-build"]
+]
+install: ["ocaml" "setup.ml" "-install"]
+remove: [
+  ["ocamlfind" "remove" "sessions"]
+]
+build-test: [
+  ["ocaml" "setup.ml" "-configure" "--enable-tests" "--%{lwt:enable}%-lwt"]
+  ["ocaml" "setup.ml" "-build"]
+  ["ocaml" "setup.ml" "-test"]
+]
+build-doc: [ "ocaml" "setup.ml" "-doc" ]
+depends: [
+  "base-threads"
+  "base-unix"
+  "lwt"
+  "ocamlfind" {build}
+]
+available: [ ocaml-version >= "4.02.3" ]

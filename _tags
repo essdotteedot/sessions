@@ -1,0 +1,39 @@
+# OASIS_START
+# DO NOT EDIT (digest: f30c2228080509953ff39601a2584b21)
+# Ignore VCS directories, you can use the same kind of rule outside
+# OASIS_START/STOP if you want to exclude directories that contains
+# useless stuff for the build process
+true: annot, bin_annot
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library sessions
+"src/sessions.cmxs": use_sessions
+# Library sessions-lwt
+"src/sessions-lwt.cmxs": use_sessions-lwt
+<src/*.ml{,i,y}>: package(lwt)
+<src/*.ml{,i,y}>: package(lwt.unix)
+<src/*.ml{,i,y}>: package(threads)
+<src/*.ml{,i,y}>: package(unix)
+<src/*.ml{,i,y}>: use_sessions
+# Executable vending_machine
+"examples/vending_machine.native": package(lwt)
+"examples/vending_machine.native": package(lwt.unix)
+"examples/vending_machine.native": package(threads)
+"examples/vending_machine.native": package(unix)
+"examples/vending_machine.native": use_sessions
+"examples/vending_machine.native": use_sessions-lwt
+<examples/*.ml{,i,y}>: package(lwt)
+<examples/*.ml{,i,y}>: package(lwt.unix)
+<examples/*.ml{,i,y}>: package(threads)
+<examples/*.ml{,i,y}>: package(unix)
+<examples/*.ml{,i,y}>: use_sessions
+<examples/*.ml{,i,y}>: use_sessions-lwt
+# OASIS_STOP

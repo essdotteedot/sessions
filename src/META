@@ -1,0 +1,23 @@
+# OASIS_START
+# DO NOT EDIT (digest: 2a1685dc8e6501585f8946393537df57)
+version = "0.1.0"
+description =
+"Library to provide session types to allow for static verification of protocols between concurrent computations."
+archive(byte) = "sessions.cma"
+archive(byte, plugin) = "sessions.cma"
+archive(native) = "sessions.cmxa"
+archive(native, plugin) = "sessions.cmxs"
+exists_if = "sessions.cmxa"
+package "lwt" (
+ version = "0.1.0"
+ description =
+ "Library to provide session types to allow for static verification of protocols between concurrent computations."
+ requires = "sessions unix lwt lwt.unix threads"
+ archive(byte) = "sessions-lwt.cma"
+ archive(byte, plugin) = "sessions-lwt.cma"
+ archive(native) = "sessions-lwt.cmxa"
+ archive(native, plugin) = "sessions-lwt.cmxs"
+ exists_if = "sessions-lwt.cmxa"
+)
+# OASIS_STOP
+
