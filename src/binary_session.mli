@@ -1,20 +1,34 @@
+(** Abstract type which can perform monadic concurrent IO. *)
 module type IO = sig
 
-  type 'a t 
+  type 'a t
+  (** The monadic light weight thread type returning value ['a]. *) 
 
   type chan_endpoint
+  (** The abstract type representing one end of a communication channel. *)
 
   type chan = Chan : chan_endpoint * chan_endpoint -> chan
+  (** The abstract type representing a communication channel which consists of two {!type:Binary_session.IO.chan_endpoint}. *)
 
   val make_channel : unit -> chan
+  (** [make_channel ()] will return a new communication channel {!type:Binary_session.IO.chan}. *)
 
   val read_channel : chan_endpoint -> 'a t
+  (** [read_channel end_point] reads a marshalled value from [end_point] and returns it. *)
 
-  val write_channel : 'a -> chan_endpoint -> unit t	
+  val write_channel : 'a -> flags:Marshal.extern_flags list -> chan_endpoint -> unit t
+  (** [write_channel v flags end_point] marshals the value [v] according to [flags] and writes it to [end_point]. *)
+
+  val close_channel : chan -> unit t
+  (** [close_channel c] will close the given channel [c]. *)	
 
   val return : 'a -> 'a t
+  (** [return v] creates a light weight thread returning [v]. *)
 
   val (>>=) : 'a t -> ('a -> 'b t) -> 'b t	
+  (** [bind t f] is a thread which first waits for the thread [t] to terminate and then, behaves as the application of 
+      function [f] to the return value of [t]. 
+  *)
 
 end
 

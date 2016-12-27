@@ -10,7 +10,9 @@ module type IO = sig
 
   val read_channel : chan_endpoint -> 'a t
 
-  val write_channel : 'a -> chan_endpoint -> unit t	
+  val write_channel : 'a -> flags:Marshal.extern_flags list -> chan_endpoint -> unit t
+
+  val close_channel : chan -> unit t	
 
   val return : 'a -> 'a t
 
@@ -95,7 +97,7 @@ module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_en
   type which_choice = Left_choice | Right_choice
 
   let send (i : 'a) : (unit, ('a send * 'b, 'a recv * 'c) session, ('b, 'c) session) process =
-    P (fun ch -> I.(write_channel i ch >>= fun () -> return ((),ch)))
+    P (fun ch -> I.(write_channel i ~flags:[Marshal.Closures] ch >>= fun () -> return ((),ch)))
 
   let recv () : ('a, ('a recv * 'b, 'a send * 'c) session, ('b, 'c) session) process = 
     P (fun ch -> I.(read_channel ch >>= fun v -> return (v,ch)))
@@ -110,11 +112,11 @@ module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_en
 
   let choose_left (left : ('e,('a, 'b) session,unit) process) : 
     ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process =
-    P (fun ch -> I.(write_channel Left_choice ch >>= fun () -> let P left' = left in left' ch))
+    P (fun ch -> I.(write_channel ~flags:[] Left_choice ch >>= fun () -> let P left' = left in left' ch))
 
   let choose_right (right : ('e,('c, 'd) session,unit) process) :
     ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process =
-    P (fun ch -> I.(write_channel Right_choice ch >>= fun () -> let P right' = right in right' ch))
+    P (fun ch -> I.(write_channel ~flags:[] Right_choice ch >>= fun () -> let P right' = right in right' ch))
 
   let stop (v : 'a) : ('a, (stop,stop) session, unit) process = 
     P (fun ch -> I.return (v,ch))

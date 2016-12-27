@@ -6,15 +6,22 @@ module Nonblock_io = struct
   type chan = Chan : chan_endpoint * chan_endpoint -> chan
 
   let make_channel () : chan =
-      let (in_ch,out_ch) = Lwt_io.pipe () in
-      let (in_ch',out_ch') = Lwt_io.pipe () in
-      Chan ((in_ch',out_ch),(in_ch,out_ch'))
+    let (in_ch,out_ch) = Lwt_io.pipe () in
+    let (in_ch',out_ch') = Lwt_io.pipe () in
+    Chan ((in_ch',out_ch),(in_ch,out_ch'))
 
   let read_channel ((in_ch,_) : chan_endpoint) : 'a t =
-      Lwt_io.read_value in_ch
+    Lwt_io.read_value in_ch
 
-  let write_channel (v : 'a) ((_,out_ch) : chan_endpoint) : unit t =
-      Lwt_io.write_value out_ch v
+  let write_channel (v : 'a) ~(flags:Marshal.extern_flags list) ((_,out_ch) : chan_endpoint) : unit t =
+    Lwt_io.write_value out_ch ~flags v
+
+  let close_channel (Chan ((ch_in0,ch_out0),(ch_in1,ch_out1)) : chan) : unit t =
+    Lwt.(Lwt_io.close ch_in0 >>= fun () -> 
+         Lwt_io.close ch_out0 >>= fun () ->
+         Lwt_io.close ch_in1 >>= fun () ->
+         Lwt_io.close ch_out1
+        )
 
   let return = Lwt.return
 
