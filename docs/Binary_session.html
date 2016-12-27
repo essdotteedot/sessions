@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Binary_session" rel="Chapter" href="Binary_session.html"><title>Binary_session</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Binary_session.html">Binary_session</a></h1>
+
+<pre><span class="keyword">module</span> Binary_session: <code class="code"><span class="keyword">sig</span></code> <a href="Binary_session.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+This module provides modules to create binary sessions types for statically verifying protocols between 
+    a pair of concurrent processes. 
+<p>
+
+    Binary processes which are parametrized by binary session types can be created using <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a>.<br>
+<b>Author(s):</b> essdotteedot [&lt;essdotteedot[at]gmail[dot]com&gt;]<br>
+<b>Version:</b> 0.1.0<br>
+</div>
+<hr width="100%">
+
+<pre><span class="keyword">module type</span> <a href="Binary_session.IO.html">IO</a> = <code class="code"><span class="keyword">sig</span></code> <a href="Binary_session.IO.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Abstract type which can perform monadic concurrent IO.
+</div>
+
+<pre><span class="keyword">module type</span> <a href="Binary_session.Binary_process.html">Binary_process</a> = <code class="code"><span class="keyword">sig</span></code> <a href="Binary_session.Binary_process.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+A process which is parametrized by a binary session type.
+</div>
+
+<pre><span class="keyword">module</span> <a href="Binary_session.Make.html">Make</a> <code class="code">(</code><code class="code"><span class="constructor">I</span></code><code class="code"> : </code><code class="type"><a href="Binary_session.IO.html">IO</a></code><code class="code">) </code>: <code class="type"><a href="Binary_session.Binary_process.html">Binary_process</a></code><code class="type">  with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint and type chan = I.chan</code></pre><div class="info">
+Functor to create a module of type <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a> given a message module <code class="code"><span class="constructor">I</span></code> of type <a href="Binary_session.IO.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span></code></a>.
+</div>
+</body></html>

@@ -1,3 +1,12 @@
+(** This module provides modules to create binary sessions types for statically verifying protocols between 
+    a pair of concurrent processes. 
+
+    Binary processes which are parametrized by binary session types can be created using {!modtype:Binary_process}.     
+
+    @author essdotteedot [<essdotteedot[at]gmail[dot]com>]
+    @version 0.1.0
+*)
+
 (** Abstract type which can perform monadic concurrent IO. *)
 module type IO = sig
 
@@ -32,53 +41,104 @@ module type IO = sig
 
 end
 
+(** A process which is parametrized by a binary session type. *)
 module type Binary_process = sig
 
   type 'a io
+  (** The abstract monadic type representing a computation returning ['a]. *)
 
   type chan_endpoint
+  (** The abstract type representing one end of a communication channel. *)
 
   type chan
+  (** The abstract type representing a communication channel. *)
 
   type stop
+  (** The type representing the end of a communication protocol between two processes. 
+      {!type:Binary_session.Binary_process.stop} is a dual of itself.
+   *)
 
   type 'a send
+  (** The type representing a send operation in a communication protocol between two processes 
+      which has one process sending a value of type ['a] to the other process. 
+      {!type:Binary_session.Binary_process.send} is a dual of {!type:Binary_session.Binary_process.recv}.
+   *)
 
   type 'a recv
+  (** The type representing a receive operation in a communication protocol between two processes 
+      which has one process receiving a value of type ['a] to the other process. 
+      {!type:Binary_session.Binary_process.recv} is a dual of {!type:Binary_session.Binary_process.send}.
+   *)
 
   type ('a,'b) choice
+  (** The type representing an internal choice in a communication protocol between two processes.
+      {!type:Binary_session.Binary_process.choice} is a dual of {!type:Binary_session.Binary_process.offer}.
+   *)
 
   type ('a,'b) offer
+  (** The type representing an external choice in a communication protocol between two processes.
+      {!type:Binary_session.Binary_process.offer} is a dual of {!type:Binary_session.Binary_process.choice}.
+   *)
 
   type ('a,'b) session
+  (** The type representing a communication protocol made up of a sequence of operations ({!type:Binary_session.Binary_process.stop}, 
+      {!type:Binary_session.Binary_process.send}, {!type:Binary_session.Binary_process.recv}, 
+      {!type:Binary_session.Binary_process.choice}, {!type:Binary_session.Binary_process.offer}) between two processes. 
+      The type ['a] is the sequence of operations from the point of view from the first process and ['b] 
+      its dual is the sequence of operations from the point of view of the second process.
+   *)
 
   type ('a,'b,'c) process
+  (** The type representing a process returning a value of type ['a]. The type ['b] represents the next allowed
+      sequnce of operations and ['c] represents the sequence of operations after performing the first operation
+      in ['b].
+  *)
 
   val send : 'a -> (unit, ('a send * 'b, 'a recv * 'c) session, ('b, 'c) session) process
+  (** [send v] creates a process which is capable of sending a value of type ['a] ([v]) to the other process. *)
 
   val recv : unit -> ('a, ('a recv * 'b, 'a send * 'c) session, ('b, 'c) session) process
+  (** [recv ()] creates a process which is capable of receiving a value of type ['a] to the other process. *)
 
   val offer : ('e,('a, 'b) session,unit) process -> ('e,('c, 'd) session,unit) process -> 
     ('e,((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session,unit) process 
+  (** [offer left_choice right_choice] creates a process which allows the other process to make a choice between
+      two choices [left_choice] and [right_choice].
+   *)
 
   val choose_left : ('e,('a, 'b) session,unit) process ->
     ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process
+  (** [choose_left left_choice] creates a process which internally chooses [left_choice] and communicates this choice
+      to the other process.
+   *)
 
   val choose_right : ('e,('c, 'd) session,unit) process ->
     ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process
+  (** [choose_right right_choice] creates a process which internally chooses [rigth_choice] and communicates this choice
+      to the other process.
+   *)
 
   val stop : 'a -> ('a, (stop,stop) session, unit) process
+  (** [stop v] creates a process which stops (is not capable of performing any further operations) and returns a 
+      value v.
+   *)
 
   val lift_io : 'a io -> ('a, 'b, 'b) process
+  (** [lift_io io] lifts the [io] computation into the process. The processes' capabilities are not altered. *)
 
   val return : 'a -> ('a,'b,'b) process
+  (** [return v] creates a process which returns [v] its capabilities are not altered. *)
 
   val (>>=) : ('a,'b,'c) process -> ('a -> ('d,'c,'e) process) -> ('d,'b,'e) process
+  (** [p1 >>= f] creates a process which is the composition of running [p1] then applying. *)  
 
-  val run_process : ('a, ('b,'c) session, unit) process -> unit
-
-  val run_processes : ('a, ('b,'c) session, unit) process -> ('d, ('c,'b) session, unit) process -> unit
+  val run_processes : ('a, ('b,'c) session, unit) process -> ('d, ('c,'b) session, unit) process -> ('a * 'd) io
+  (** [run_process p1 p2] will run two processes [p1] and [p2] which have dual session types and which have
+      [unit] as their end state capabilities (i.e., are complete processes). The result is a 
+      {!type:Binary_session.IO.t} returning a pair of values which are the result of each process.
+   *)
 
 end
 
 module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint and type chan = I.chan)  
+(** Functor to create a module of type {!modtype:Binary_process} given a message module [I] of type {!modtype:IO}. *)

@@ -1,0 +1,30 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Binary_session" rel="Chapter" href="Binary_session.html"><title>Binary_session.IO</title>
+</head>
+<body>
+<code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;chan_endpoint<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;chan&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Chan</span>&nbsp;:&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan_endpoint&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan_endpoint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_channel&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_channel&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan_endpoint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_channel&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;flags:<span class="constructor">Marshal</span>.extern_flags&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan_endpoint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_channel&nbsp;:&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;return&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;&gt;&gt;=&nbsp;)&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t<br>
+<span class="keyword">end</span></code></body></html>

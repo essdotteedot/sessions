@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="next" href="Binary_session.Binary_process.html">
+<link rel="Up" href="Binary_session.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Binary_session" rel="Chapter" href="Binary_session.html"><title>Binary_session.IO</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="Binary_session.html" title="Binary_session">Up</a>
+&nbsp;<a class="post" href="Binary_session.Binary_process.html" title="Binary_session.Binary_process">Next</a>
+</div>
+<h1>Module type <a href="type_Binary_session.IO.html">Binary_session.IO</a></h1>
+
+<pre><span class="keyword">module type</span> IO = <code class="code"><span class="keyword">sig</span></code> <a href="Binary_session.IO.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+Abstract type which can perform monadic concurrent IO.<br>
+</div>
+<hr width="100%">
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
+<div class="info ">
+The monadic light weight thread type returning value <code class="code"><span class="keywordsign">'</span>a</code>.<br>
+</div>
+
+
+<pre><span id="TYPEchan_endpoint"><span class="keyword">type</span> <code class="type"></code>chan_endpoint</span> </pre>
+<div class="info ">
+The abstract type representing one end of a communication channel.<br>
+</div>
+
+
+<pre><code><span id="TYPEchan"><span class="keyword">type</span> <code class="type"></code>chan</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTchan.Chan"><span class="constructor">Chan</span></span> <span class="keyword">:</span> <code class="type"><a href="Binary_session.IO.html#TYPEchan_endpoint">chan_endpoint</a> * <a href="Binary_session.IO.html#TYPEchan_endpoint">chan_endpoint</a></code> <span class="keyword">-></span> <code class="type"><a href="Binary_session.IO.html#TYPEchan">chan</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+The abstract type representing a communication channel which consists of two <a href="Binary_session.IO.html#TYPEchan_endpoint"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan_endpoint</code></a>.<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
+
+
+<pre><span id="VALmake_channel"><span class="keyword">val</span> make_channel</span> : <code class="type">unit -> <a href="Binary_session.IO.html#TYPEchan">chan</a></code></pre><div class="info ">
+<code class="code">make_channel ()</code> will return a new communication channel <a href="Binary_session.IO.html#TYPEchan"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan</code></a>.<br>
+</div>
+
+<pre><span id="VALread_channel"><span class="keyword">val</span> read_channel</span> : <code class="type"><a href="Binary_session.IO.html#TYPEchan_endpoint">chan_endpoint</a> -> 'a <a href="Binary_session.IO.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">read_channel end_point</code> reads a marshalled value from <code class="code">end_point</code> and returns it.<br>
+</div>
+
+<pre><span id="VALwrite_channel"><span class="keyword">val</span> write_channel</span> : <code class="type">'a -><br>       flags:Marshal.extern_flags list -><br>       <a href="Binary_session.IO.html#TYPEchan_endpoint">chan_endpoint</a> -> unit <a href="Binary_session.IO.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">write_channel v flags end_point</code> marshals the value <code class="code">v</code> according to <code class="code">flags</code> and writes it to <code class="code">end_point</code>.<br>
+</div>
+
+<pre><span id="VALclose_channel"><span class="keyword">val</span> close_channel</span> : <code class="type"><a href="Binary_session.IO.html#TYPEchan">chan</a> -> unit <a href="Binary_session.IO.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">close_channel c</code> will close the given channel <code class="code">c</code>.<br>
+</div>
+
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> 'a <a href="Binary_session.IO.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">return v</code> creates a light weight thread returning <code class="code">v</code>.<br>
+</div>
+
+<pre><span id="VAL(>>=)"><span class="keyword">val</span> (&gt;&gt;=)</span> : <code class="type">'a <a href="Binary_session.IO.html#TYPEt">t</a> -><br>       ('a -> 'b <a href="Binary_session.IO.html#TYPEt">t</a>) -> 'b <a href="Binary_session.IO.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">bind t f</code> is a thread which first waits for the thread <code class="code">t</code> to terminate and then, behaves as the application of 
+      function <code class="code">f</code> to the return value of <code class="code">t</code>.<br>
+</div>
+</body></html>

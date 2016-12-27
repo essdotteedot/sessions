@@ -1,0 +1,113 @@
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Binary_session" rel="Chapter" href="Binary_session.html"><title>Index of values</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of values</h1>
+<table>
+<tr><td align="left"><br></td></tr>
+<tr><td><a href="Binary_session.IO.html#VAL(>>=)">(&gt;&gt;=)</a> [<a href="Binary_session.IO.html">Binary_session.IO</a>]</td>
+<td><div class="info">
+<code class="code">bind t f</code> is a thread which first waits for the thread <code class="code">t</code> to terminate and then, behaves as the application of 
+      function <code class="code">f</code> to the return value of <code class="code">t</code>.
+</div>
+</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VAL(>>=)">(&gt;&gt;=)</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">p1 &gt;&gt;= f</code> creates a process which is the composition of running <code class="code">p1</code> then applying.
+</div>
+</td></tr>
+<tr><td align="left"><br>C</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VALchoose_left">choose_left</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">choose_left left_choice</code> creates a process which internally chooses <code class="code">left_choice</code> and communicates this choice
+      to the other process.
+</div>
+</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VALchoose_right">choose_right</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">choose_right right_choice</code> creates a process which internally chooses <code class="code">rigth_choice</code> and communicates this choice
+      to the other process.
+</div>
+</td></tr>
+<tr><td><a href="Binary_session.IO.html#VALclose_channel">close_channel</a> [<a href="Binary_session.IO.html">Binary_session.IO</a>]</td>
+<td><div class="info">
+<code class="code">close_channel c</code> will close the given channel <code class="code">c</code>.
+</div>
+</td></tr>
+<tr><td align="left"><br>L</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VALlift_io">lift_io</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">lift_io io</code> lifts the <code class="code">io</code> computation into the process.
+</div>
+</td></tr>
+<tr><td align="left"><br>M</td></tr>
+<tr><td><a href="Binary_session.IO.html#VALmake_channel">make_channel</a> [<a href="Binary_session.IO.html">Binary_session.IO</a>]</td>
+<td><div class="info">
+<code class="code">make_channel ()</code> will return a new communication channel <a href="Binary_session.IO.html#TYPEchan"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.chan</code></a>.
+</div>
+</td></tr>
+<tr><td align="left"><br>O</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VALoffer">offer</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">offer left_choice right_choice</code> creates a process which allows the other process to make a choice between
+      two choices <code class="code">left_choice</code> and <code class="code">right_choice</code>.
+</div>
+</td></tr>
+<tr><td align="left"><br>R</td></tr>
+<tr><td><a href="Binary_session.IO.html#VALread_channel">read_channel</a> [<a href="Binary_session.IO.html">Binary_session.IO</a>]</td>
+<td><div class="info">
+<code class="code">read_channel end_point</code> reads a marshalled value from <code class="code">end_point</code> and returns it.
+</div>
+</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VALrecv">recv</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">recv ()</code> creates a process which is capable of receiving a value of type <code class="code"><span class="keywordsign">'</span>a</code> to the other process.
+</div>
+</td></tr>
+<tr><td><a href="Binary_session.IO.html#VALreturn">return</a> [<a href="Binary_session.IO.html">Binary_session.IO</a>]</td>
+<td><div class="info">
+<code class="code">return v</code> creates a light weight thread returning <code class="code">v</code>.
+</div>
+</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VALreturn">return</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">return v</code> creates a process which returns <code class="code">v</code> its capabilities are not altered.
+</div>
+</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VALrun_processes">run_processes</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">run_process p1 p2</code> will run two processes <code class="code">p1</code> and <code class="code">p2</code> which have dual session types and which have
+      <code class="code">unit</code> as their end state capabilities (i.e., are complete processes).
+</div>
+</td></tr>
+<tr><td align="left"><br>S</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VALsend">send</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">send v</code> creates a process which is capable of sending a value of type <code class="code"><span class="keywordsign">'</span>a</code> (<code class="code">v</code>) to the other process.
+</div>
+</td></tr>
+<tr><td><a href="Binary_session.Binary_process.html#VALstop">stop</a> [<a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a>]</td>
+<td><div class="info">
+<code class="code">stop v</code> creates a process which stops (is not capable of performing any further operations) and returns a 
+      value v.
+</div>
+</td></tr>
+<tr><td align="left"><br>W</td></tr>
+<tr><td><a href="Binary_session.IO.html#VALwrite_channel">write_channel</a> [<a href="Binary_session.IO.html">Binary_session.IO</a>]</td>
+<td><div class="info">
+<code class="code">write_channel v flags end_point</code> marshals the value <code class="code">v</code> according to <code class="code">flags</code> and writes it to <code class="code">end_point</code>.
+</div>
+</td></tr>
+</table>
+</body>
+</html>
