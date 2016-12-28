@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Binary_session.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Binary_session" rel="Chapter" href="Binary_session.html">
+<link title="Binary_session_lwt" rel="Chapter" href="Binary_session_lwt.html"><title>Binary_session_lwt</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Binary_session.html" title="Binary_session">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Binary_session_lwt.html">Binary_session_lwt</a></h1>
+
+<pre><span class="keyword">module</span> Binary_session_lwt: <code class="code"><span class="keyword">sig</span></code> <a href="Binary_session_lwt.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+A lwt based implementation of <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a>
+    that uses a pipe for the communication channel between two processes.<br>
+<b>Author(s):</b> essdotteedot [&lt;essdotteedot[at]gmail[dot]com&gt;]<br>
+<b>Version:</b> 0.1.0<br>
+</div>
+<hr width="100%">
+
+<pre><span class="keyword">module</span> <a href="Binary_session_lwt.Make.html">Make</a>: <code class="type"><a href="Binary_session.Binary_process.html">Binary_session.Binary_process</a></code><code class="type">  with type 'a io = 'a Lwt.t and type chan_endpoint = (Lwt_io.input_channel * Lwt_io.output_channel)</code></pre><div class="info">
+Functor to create a module of type <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a>.
+</div>
+</body></html>

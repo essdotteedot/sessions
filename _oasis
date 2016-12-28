@@ -3,6 +3,7 @@ Version: 0.1.0
 Synopsis: Library to provide session types to allow for static verification of protocols between concurrent computations.
 Description: 
   Provides sessions types (currently binary session type) for statically verifying protocols between concurrent computations.
+  A pair of processes which are parametrized by binary session types can only be run if they have compatible (dual) session types. 
   This library is based on the paper "Haskell Session Types with (Almost) No Class".
 Authors: essdotteedot <essdotteedot@gmail.com>
 Maintainers: essdotteedot <essdotteedot@gmail.com>
@@ -54,7 +55,7 @@ Document "sessions-api"
   Title: API reference for sessions
   XOCamlbuildPath: .
   XOCamlbuildExtraArgs: "-docflags '-colorize-code -short-functors -charset utf-8'"
-  XOCamlbuildLibraries: sessions
+  XOCamlbuildLibraries: sessions, sessions.lwt
 
 SourceRepository master
   Type: git

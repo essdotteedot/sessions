@@ -23,5 +23,5 @@ module Nonblock_io = struct
   let (>>=) = Lwt.(>>=)    
 end
 
-module Make : (Binary_session.Binary_process with type 'a io = 'a Nonblock_io.t and type chan_endpoint = Nonblock_io.chan_endpoint) =
+module Make : (Binary_session.Binary_process with type 'a io = 'a Lwt.t and type chan_endpoint = (Lwt_io.input_channel * Lwt_io.output_channel)) =
   Binary_session.Make (Nonblock_io)

@@ -7,7 +7,8 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="Binary_session" rel="Chapter" href="Binary_session.html"><title>Index of modules</title>
+<link title="Binary_session" rel="Chapter" href="Binary_session.html">
+<link title="Binary_session_lwt" rel="Chapter" href="Binary_session_lwt.html"><title>Index of modules</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
@@ -21,7 +22,18 @@ This module provides modules to create binary sessions types for statically veri
     a pair of concurrent processes.
 </div>
 </td></tr>
+<tr><td><a href="Binary_session_lwt.html">Binary_session_lwt</a> </td>
+<td><div class="info">
+A lwt based implementation of <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a>
+    that uses a pipe for the communication channel between two processes.
+</div>
+</td></tr>
 <tr><td align="left"><br>M</td></tr>
+<tr><td><a href="Binary_session_lwt.Make.html">Make</a> [<a href="Binary_session_lwt.html">Binary_session_lwt</a>]</td>
+<td><div class="info">
+Functor to create a module of type <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a>.
+</div>
+</td></tr>
 <tr><td><a href="Binary_session.Make.html">Make</a> [<a href="Binary_session.html">Binary_session</a>]</td>
 <td><div class="info">
 Functor to create a module of type <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a> given a message module <code class="code"><span class="constructor">I</span></code> of type <a href="Binary_session.IO.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span></code></a>.
