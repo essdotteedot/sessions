@@ -135,7 +135,7 @@ module type Binary_process = sig
   val run_processes : ('a, ('b,'c) session, unit) process -> ('d, ('c,'b) session, unit) process -> ((unit -> 'a io) * (unit -> 'd io)) io
   (** [run_process p1 p2] will run two processes [p1] and [p2] which have dual session types and which have
       [unit] as their end state capabilities (i.e., are complete processes). The result is a 
-      {!type:Binary_session.IO.t} returning a pair of values which are the result of each process.
+      {!type:Binary_session.IO.t} returning a pair of functions which may be invoked to run each process.
 
       Note, the channel that is opened between the two processes is closed when the processes have completed.
   *)

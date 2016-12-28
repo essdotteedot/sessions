@@ -93,5 +93,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;unit)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a&nbsp;*&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.io<br>
+&nbsp;&nbsp;&nbsp;&nbsp;((unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.io)&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>d&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.io))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.io<br>
 <span class="keyword">end</span></code></body></html>

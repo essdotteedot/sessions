@@ -148,9 +148,12 @@ The type representing a process returning a value of type <code class="code"><sp
 <code class="code">p1 &gt;&gt;= f</code> creates a process which is the composition of running <code class="code">p1</code> then applying.<br>
 </div>
 
-<pre><span id="VALrun_processes"><span class="keyword">val</span> run_processes</span> : <code class="type">('a, ('b, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('d, ('c, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('a * 'd) <a href="Binary_session.Binary_process.html#TYPEio">io</a></code></pre><div class="info ">
+<pre><span id="VALrun_processes"><span class="keyword">val</span> run_processes</span> : <code class="type">('a, ('b, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('d, ('c, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ((unit -> 'a <a href="Binary_session.Binary_process.html#TYPEio">io</a>) *<br>        (unit -> 'd <a href="Binary_session.Binary_process.html#TYPEio">io</a>))<br>       <a href="Binary_session.Binary_process.html#TYPEio">io</a></code></pre><div class="info ">
 <code class="code">run_process p1 p2</code> will run two processes <code class="code">p1</code> and <code class="code">p2</code> which have dual session types and which have
       <code class="code">unit</code> as their end state capabilities (i.e., are complete processes). The result is a 
-      <a href="Binary_session.IO.html#TYPEt"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t</code></a> returning a pair of values which are the result of each process.<br>
+      <a href="Binary_session.IO.html#TYPEt"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t</code></a> returning a pair of functions which may be invoked to run each process.
+<p>
+
+      Note, the channel that is opened between the two processes is closed when the processes have completed.<br>
 </div>
 </body></html>
