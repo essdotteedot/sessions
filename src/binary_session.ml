@@ -26,8 +26,6 @@ module type Binary_process = sig
 
   type chan_endpoint
 
-  type chan
-
   type stop
 
   type 'a send
@@ -67,12 +65,10 @@ module type Binary_process = sig
 
 end
 
-module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint and type chan = I.chan) = struct
+module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint) = struct
   type 'a io = 'a I.t
 
   type chan_endpoint = I.chan_endpoint
-
-  type chan = I.chan
 
   type stop
 

@@ -16,7 +16,7 @@
 &nbsp;</div>
 <h1>Functor <a href="type_Binary_session.Make.html">Binary_session.Make</a></h1>
 
-<pre><span class="keyword">module</span> Make <code class="code">(</code><code class="code"><span class="constructor">I</span></code><code class="code"> : </code><code class="type"><a href="Binary_session.IO.html">IO</a></code><code class="code">) </code>: <code class="type"><a href="Binary_session.Binary_process.html">Binary_process</a></code><code class="type">  with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint and type chan = I.chan</code></pre><div class="info module top">
+<pre><span class="keyword">module</span> Make <code class="code">(</code><code class="code"><span class="constructor">I</span></code><code class="code"> : </code><code class="type"><a href="Binary_session.IO.html">IO</a></code><code class="code">) </code>: <code class="type"><a href="Binary_session.Binary_process.html">Binary_process</a></code><code class="type">  with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint</code></pre><div class="info module top">
 Functor to create a module of type <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a> given a message module <code class="code"><span class="constructor">I</span></code> of type <a href="Binary_session.IO.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span></code></a>.<br>
 </div>
 <table border="0" cellpadding="3" width="100%">
@@ -44,12 +44,6 @@ The abstract monadic type representing a computation returning <code class="code
 <pre><span id="TYPEchan_endpoint"><span class="keyword">type</span> <code class="type"></code>chan_endpoint</span> </pre>
 <div class="info ">
 The abstract type representing one end of a communication channel.<br>
-</div>
-
-
-<pre><span id="TYPEchan"><span class="keyword">type</span> <code class="type"></code>chan</span> </pre>
-<div class="info ">
-The abstract type representing a communication channel.<br>
 </div>
 
 

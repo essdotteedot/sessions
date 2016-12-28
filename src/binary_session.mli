@@ -1,7 +1,8 @@
 (** This module provides modules to create binary sessions types for statically verifying protocols between 
     a pair of concurrent processes. 
 
-    Binary processes which are parametrized by binary session types can be created using {!modtype:Binary_process}.     
+    Binary processes which are parametrized by binary session types can be created using {!modtype:Binary_process}. 
+    A pair of processes can only be run if they have compatible (dual) session types.    
 
     @author essdotteedot [<essdotteedot[at]gmail[dot]com>]
     @version 0.1.0
@@ -49,9 +50,6 @@ module type Binary_process = sig
 
   type chan_endpoint
   (** The abstract type representing one end of a communication channel. *)
-
-  type chan
-  (** The abstract type representing a communication channel. *)
 
   type stop
   (** The type representing the end of a communication protocol between two processes. 
@@ -142,5 +140,5 @@ module type Binary_process = sig
 
 end
 
-module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint and type chan = I.chan)  
+module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint)  
 (** Functor to create a module of type {!modtype:Binary_process} given a message module [I] of type {!modtype:IO}. *)

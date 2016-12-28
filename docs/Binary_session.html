@@ -21,7 +21,8 @@ This module provides modules to create binary sessions types for statically veri
     a pair of concurrent processes. 
 <p>
 
-    Binary processes which are parametrized by binary session types can be created using <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a>.<br>
+    Binary processes which are parametrized by binary session types can be created using <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a>. 
+    A pair of processes can only be run if they have compatible (dual) session types.<br>
 <b>Author(s):</b> essdotteedot [&lt;essdotteedot[at]gmail[dot]com&gt;]<br>
 <b>Version:</b> 0.1.0<br>
 </div>
@@ -35,7 +36,7 @@ Abstract type which can perform monadic concurrent IO.
 A process which is parametrized by a binary session type.
 </div>
 
-<pre><span class="keyword">module</span> <a href="Binary_session.Make.html">Make</a> <code class="code">(</code><code class="code"><span class="constructor">I</span></code><code class="code"> : </code><code class="type"><a href="Binary_session.IO.html">IO</a></code><code class="code">) </code>: <code class="type"><a href="Binary_session.Binary_process.html">Binary_process</a></code><code class="type">  with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint and type chan = I.chan</code></pre><div class="info">
+<pre><span class="keyword">module</span> <a href="Binary_session.Make.html">Make</a> <code class="code">(</code><code class="code"><span class="constructor">I</span></code><code class="code"> : </code><code class="type"><a href="Binary_session.IO.html">IO</a></code><code class="code">) </code>: <code class="type"><a href="Binary_session.Binary_process.html">Binary_process</a></code><code class="type">  with type 'a io = 'a I.t and type chan_endpoint = I.chan_endpoint</code></pre><div class="info">
 Functor to create a module of type <a href="Binary_session.Binary_process.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span></code></a> given a message module <code class="code"><span class="constructor">I</span></code> of type <a href="Binary_session.IO.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span></code></a>.
 </div>
 </body></html>
