@@ -36,6 +36,8 @@ module type Binary_process = sig
 
   type ('a,'b) offer
 
+  type 'a jump  
+
   type ('a,'b) session
 
   type ('a,'b,'c) process
@@ -44,14 +46,15 @@ module type Binary_process = sig
 
   val recv : unit -> ('a, ('a recv * 'b, 'a send * 'c) session, ('b, 'c) session) process
 
-  val offer : ('e,('a, 'b) session,unit) process -> ('e,('c, 'd) session,unit) process -> 
-    ('e,((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session,unit) process 
-
-  val choose_left : ('e,('a, 'b) session,unit) process ->
-    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process
-
-  val choose_right : ('e,('c, 'd) session,unit) process ->
-    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process
+  val offer : ('e,('a, 'b) session,'f) process -> ('e,('c, 'd) session,'f) process -> 
+    ('e,((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session,'f) process 
+  
+  val choose_left : ('e,('a, 'b) session,'f) process ->
+    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process
+  
+  val choose_right : ('e,('c, 'd) session,'f) process ->
+    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process
+  
 
   val stop : 'a -> ('a, (stop,stop) session, unit) process
 
@@ -80,6 +83,8 @@ module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_en
 
   type ('a,'b) offer
 
+  type 'a jump = Jump : 'a -> 'a jump 
+
   type ('a,'b) session = End    : (stop,stop) session
                        | Send   : ('a send * 'b, 'a recv * 'c) session
                        | Recv   : ('a recv * 'b, 'a send * 'c) session
@@ -96,20 +101,20 @@ module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_en
   let recv () : ('a, ('a recv * 'b, 'a send * 'c) session, ('b, 'c) session) process = 
     P (fun ch -> I.(read_channel ch >>= fun (v : 'a) -> return (v,ch)))
 
-  let offer (left : ('e,('a, 'b) session,unit) process) (right : ('e,('c, 'd) session,unit) process) :
-    ('e,((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session,unit) process = 
+  let offer (left : ('e,('a, 'b) session,'f) process) (right : ('e,('c, 'd) session,'f) process) :
+    ('e,((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session,'f) process = 
     P (fun ch -> I.(
         read_channel ch >>= function        
           Left_choice -> let P left' = left in left' ch 
         | Right_choice -> let P right' = right in right' ch
       ))
 
-  let choose_left (left : ('e,('a, 'b) session,unit) process) : 
-    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process =
+  let choose_left (left : ('e,('a, 'b) session,'f) process) : 
+    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process =
     P (fun ch -> I.(write_channel ~flags:[] Left_choice ch >>= fun () -> let P left' = left in left' ch))
 
-  let choose_right (right : ('e,('c, 'd) session,unit) process) :
-    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process =
+  let choose_right (right : ('e,('c, 'd) session,'f) process) :
+    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process =
     P (fun ch -> I.(write_channel ~flags:[] Right_choice ch >>= fun () -> let P right' = right in right' ch))
 
   let stop (v : 'a) : ('a, (stop,stop) session, unit) process = 

@@ -78,6 +78,9 @@ module type Binary_process = sig
       {!type:Binary_session.Binary_process.offer} is a dual of {!type:Binary_session.Binary_process.choice}.
   *)
 
+  type 'a jump
+  (** The type representing a stored session so that it can be jumped back to. *)
+
   type ('a,'b) session
   (** The type representing a communication protocol made up of a sequence of operations ({!type:Binary_session.Binary_process.stop}, 
       {!type:Binary_session.Binary_process.send}, {!type:Binary_session.Binary_process.recv}, 
@@ -89,7 +92,7 @@ module type Binary_process = sig
   type ('a,'b,'c) process
   (** The type representing a process returning a value of type ['a]. The type ['b] represents the next allowed
       sequnce of operations and ['c] represents the sequence of operations after performing the first operation
-      in ['b].
+      in ['b]. 
   *)
 
   val send : 'a -> (unit, ('a send * 'b, 'a recv * 'c) session, ('b, 'c) session) process
@@ -98,20 +101,20 @@ module type Binary_process = sig
   val recv : unit -> ('a, ('a recv * 'b, 'a send * 'c) session, ('b, 'c) session) process
   (** [recv ()] creates a process which is capable of receiving a value of type ['a] to the other process. *)
 
-  val offer : ('e,('a, 'b) session,unit) process -> ('e,('c, 'd) session,unit) process -> 
-    ('e,((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session,unit) process 
+  val offer : ('e,('a, 'b) session,'f) process -> ('e,('c, 'd) session,'f) process -> 
+    ('e,((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session,'f) process 
   (** [offer left_choice right_choice] creates a process which allows the other process to make a choice between
       two choices [left_choice] and [right_choice].
   *)
 
-  val choose_left : ('e,('a, 'b) session,unit) process ->
-    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process
+  val choose_left : ('e,('a, 'b) session,'f) process ->
+    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process
   (** [choose_left left_choice] creates a process which internally chooses [left_choice] and communicates this choice
       to the other process.
   *)
 
-  val choose_right : ('e,('c, 'd) session,unit) process ->
-    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,unit) process
+  val choose_right : ('e,('c, 'd) session,'f) process ->
+    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process
   (** [choose_right right_choice] creates a process which internally chooses [rigth_choice] and communicates this choice
       to the other process.
   *)

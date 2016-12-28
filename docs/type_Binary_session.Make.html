@@ -19,6 +19,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;recv<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;choice<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;offer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;jump<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;process<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;send&nbsp;:<br>
@@ -28,26 +29,26 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;(<span class="keywordsign">'</span>a&nbsp;recv&nbsp;*&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a&nbsp;send&nbsp;*&nbsp;<span class="keywordsign">'</span>c)&nbsp;session,&nbsp;(<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;session)&nbsp;process<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;offer&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session,&nbsp;unit)&nbsp;process&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;session,&nbsp;unit)&nbsp;process&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session,&nbsp;<span class="keywordsign">'</span>f)&nbsp;process&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;session,&nbsp;<span class="keywordsign">'</span>f)&nbsp;process&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(((<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;session)&nbsp;offer,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a)&nbsp;session,&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;session)&nbsp;choice)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session,&nbsp;unit)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session,&nbsp;<span class="keywordsign">'</span>f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;choose_left&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session,&nbsp;unit)&nbsp;process&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session,&nbsp;<span class="keywordsign">'</span>f)&nbsp;process&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(((<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;session)&nbsp;choice,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a)&nbsp;session,&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;session)&nbsp;offer)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session,&nbsp;unit)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session,&nbsp;<span class="keywordsign">'</span>f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;choose_right&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;session,&nbsp;unit)&nbsp;process&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;session,&nbsp;<span class="keywordsign">'</span>f)&nbsp;process&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(((<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;session)&nbsp;choice,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a)&nbsp;session,&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;session)&nbsp;offer)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session,&nbsp;unit)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session,&nbsp;<span class="keywordsign">'</span>f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stop&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;(stop,&nbsp;stop)&nbsp;session,&nbsp;unit)&nbsp;process<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lift_io&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;io&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>b)&nbsp;process<br>
