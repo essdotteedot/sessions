@@ -16,7 +16,7 @@ module type IO = sig
 
   val return : 'a -> 'a t
 
-  val (>>=) : 'a t -> ('a -> 'b t) -> 'b t	
+  val (>>=) : 'a t -> ('a -> 'b t) -> 'b t	  
 
 end
 
@@ -63,7 +63,7 @@ module type Binary_process = sig
 
   val (>>=) : ('a,'b,'c) process -> ('a -> ('d,'c,'e) process) -> ('d,'b,'e) process  
 
-  val run_processes : ('a, ('b,'c) session, unit) process -> ('d, ('c,'b) session, unit) process -> ('a * 'd) io
+  val run_processes : ('a, ('b,'c) session, unit) process -> ('d, ('c,'b) session, unit) process -> ((unit -> 'a io) * (unit -> 'd io)) io
 
 end
 
@@ -98,12 +98,12 @@ module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_en
     P (fun ch -> I.(write_channel i ~flags:[Marshal.Closures] ch >>= fun () -> return ((),ch)))
 
   let recv () : ('a, ('a recv * 'b, 'a send * 'c) session, ('b, 'c) session) process = 
-    P (fun ch -> I.(read_channel ch >>= fun v -> return (v,ch)))
+    P (fun ch -> I.(read_channel ch >>= fun (v : 'a) -> return (v,ch)))
 
   let offer (left : ('e,('a, 'b) session,unit) process) (right : ('e,('c, 'd) session,unit) process) :
     ('e,((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session,unit) process = 
     P (fun ch -> I.(
-        read_channel ch >>= function 
+        read_channel ch >>= function        
           Left_choice -> let P left' = left in left' ch 
         | Right_choice -> let P right' = right in right' ch
       ))
@@ -128,13 +128,13 @@ module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_en
   let (>>=) (p : ('a,'b,'c) process) (f : ('a -> ('d,'c,'e) process)) : ('d,'b,'e) process =
     P (fun ch -> I.(let P p' = p in p' ch >>= fun (v,ch') -> let P p'' = f v in p'' ch' >>= fun (v'',ch'') -> return (v'',ch'')))  
 
-  let run_processes (p : ('a, ('b,'c) session, unit) process) (p1 : ('d, ('c,'b) session, unit) process) : ('a * 'd) io =
+  let run_processes (p : ('a, ('b,'c) session, unit) process) (p1 : ('d, ('c,'b) session, unit) process) : ((unit -> 'a io) * (unit -> 'd io)) io =
     I.(
       let P p' = p in
       let P p1' = p1 in
       let Chan (ep1,ep2) = I.make_channel () in
-      (p' ep1) >>= fun (v,_) ->
-      (p1' ep2) >>= fun (v1,_) ->
-      return (v,v1)
+      let r1 = fun () -> (p' ep1) >>= fun (v,_) -> return v in
+      let r2 = fun () -> (p1' ep2) >>= fun (v,_) -> return v in
+      return (r1, r2)      
     )
 end
