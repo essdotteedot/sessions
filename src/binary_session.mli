@@ -78,9 +78,6 @@ module type Binary_process = sig
       {!type:Binary_session.Binary_process.offer} is a dual of {!type:Binary_session.Binary_process.choice}.
   *)
 
-  type 'a jump
-  (** The type representing a stored session so that it can be jumped back to. *)
-
   type ('a,'b) session
   (** The type representing a communication protocol made up of a sequence of operations ({!type:Binary_session.Binary_process.stop}, 
       {!type:Binary_session.Binary_process.send}, {!type:Binary_session.Binary_process.recv}, 
@@ -118,6 +115,9 @@ module type Binary_process = sig
   (** [choose_right right_choice] creates a process which internally chooses [rigth_choice] and communicates this choice
       to the other process.
   *)
+
+  val jump : unit -> (unit,('a,'b) session,('c,'d) session) process
+  (** [jump ()] jump to another session *)
 
   val stop : 'a -> ('a, (stop,stop) session, unit) process
   (** [stop v] creates a process which stops (is not capable of performing any further operations) and returns a 

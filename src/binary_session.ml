@@ -36,8 +36,6 @@ module type Binary_process = sig
 
   type ('a,'b) offer
 
-  type 'a jump  
-
   type ('a,'b) session
 
   type ('a,'b,'c) process
@@ -54,7 +52,8 @@ module type Binary_process = sig
   
   val choose_right : ('e,('c, 'd) session,'f) process ->
     ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process
-  
+
+  val jump : unit -> (unit,('a,'b) session,('c,'d) session) process    
 
   val stop : 'a -> ('a, (stop,stop) session, unit) process
 
@@ -81,15 +80,9 @@ module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_en
 
   type ('a,'b) choice
 
-  type ('a,'b) offer
+  type ('a,'b) offer  
 
-  type 'a jump = Jump : 'a -> 'a jump 
-
-  type ('a,'b) session = End    : (stop,stop) session
-                       | Send   : ('a send * 'b, 'a recv * 'c) session
-                       | Recv   : ('a recv * 'b, 'a send * 'c) session
-                       | Choice : ((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session
-                       | Offer  : ((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session
+  type ('a,'b) session
 
   type ('a,'b,'c) process = P : (chan_endpoint -> ('a * chan_endpoint) io) -> ('a,'b,'c) process
 
@@ -116,6 +109,9 @@ module Make (I : IO) : (Binary_process with type 'a io = 'a I.t and type chan_en
   let choose_right (right : ('e,('c, 'd) session,'f) process) :
     ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process =
     P (fun ch -> I.(write_channel ~flags:[] Right_choice ch >>= fun () -> let P right' = right in right' ch))
+
+  let jump () : (unit,('a,'b) session,('c,'d) session) process =
+    P (fun ch -> I.return ((),ch))  
 
   let stop (v : 'a) : ('a, (stop,stop) session, unit) process = 
     P (fun ch -> I.return (v,ch))

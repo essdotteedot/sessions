@@ -85,12 +85,6 @@ The type representing an external choice in a communication protocol between two
 </div>
 
 
-<pre><span id="TYPEjump"><span class="keyword">type</span> <code class="type">'a</code> jump</span> </pre>
-<div class="info ">
-The type representing a stored session so that it can be jumped back to.<br>
-</div>
-
-
 <pre><span id="TYPEsession"><span class="keyword">type</span> <code class="type">('a, 'b)</code> session</span> </pre>
 <div class="info ">
 The type representing a communication protocol made up of a sequence of operations (<a href="Binary_session.Binary_process.html#TYPEstop"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.stop</code></a>, 
@@ -130,6 +124,10 @@ The type representing a process returning a value of type <code class="code"><sp
 <pre><span id="VALchoose_right"><span class="keyword">val</span> choose_right</span> : <code class="type">('e, ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('e,<br>        ((('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>          ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>         <a href="Binary_session.Binary_process.html#TYPEchoice">choice</a>,<br>         (('b, 'a) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>          ('d, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>         <a href="Binary_session.Binary_process.html#TYPEoffer">offer</a>)<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
 <code class="code">choose_right right_choice</code> creates a process which internally chooses <code class="code">rigth_choice</code> and communicates this choice
       to the other process.<br>
+</div>
+
+<pre><span id="VALjump"><span class="keyword">val</span> jump</span> : <code class="type">unit -><br>       (unit, ('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>        ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
+<code class="code">jump ()</code> jump to another session<br>
 </div>
 
 <pre><span id="VALstop"><span class="keyword">val</span> stop</span> : <code class="type">'a -><br>       ('a,<br>        (<a href="Binary_session.Binary_process.html#TYPEstop">stop</a>, <a href="Binary_session.Binary_process.html#TYPEstop">stop</a>)<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">

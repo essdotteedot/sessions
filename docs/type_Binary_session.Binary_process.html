@@ -18,7 +18,6 @@
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;recv<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;choice<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;offer<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;jump<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;send&nbsp;:<br>
@@ -74,6 +73,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.offer)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;<span class="keywordsign">'</span>f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;jump&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(unit,&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stop&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span><br>

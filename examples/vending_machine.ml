@@ -74,6 +74,34 @@ let vending_client_tea (amount : float) = BP.(
       )
   )
 
+(* Print server
+   offer a choice between
+   - stopping
+   - receiving text to be printed then looping
+*)
+let rec print_server () = BP.(
+    offer 
+      (stop ())
+      (
+        recv () >>= fun (s : string) ->
+        lift_io (Lwt_io.printlf "print server : %s" s) >>=
+        jump >>=
+        print_server
+      )
+  )  
+
+(* Print client
+   makes an internal choice between
+   - stopping
+   - receiving text to be printed then looping
+*)
+let rec print_client (i : int) = BP.(
+  lift_io (Lwt_io.read_line Lwt_io.stdin) >>= fun (s : string) ->
+  if s = "q"
+  then choose_right (send (Printf.sprintf "Total lines printed : %d" (i+1)) >>= fun () -> choose_left (stop ()))
+  else choose_right (send s >>= jump >>= fun () -> print_client (i+1))
+)  
+
 let () = Lwt_main.run (
     Lwt.(
       BP.run_processes (vending_machine ()) (vending_client_coffee 1.0) >>= fun (vm_fn,client_fn) ->
@@ -97,6 +125,13 @@ let () = Lwt_main.run (
       BP.run_processes (vending_machine ()) (vending_client_tea 3.0)  >>= fun (vm_fn,client_fn) ->
       async vm_fn ;
       client_fn () >>= fun _ ->
+
+      Lwt_io.printl "" >>= fun () ->
+
+      BP.run_processes (print_server ()) (print_client 1)  >>= fun (vm_fn,client_fn) ->
+      async vm_fn ;
+      client_fn () >>= fun _ ->
+
 
       return ()
     )
