@@ -2,7 +2,7 @@
     a pair of concurrent processes. 
 
     Binary processes which are parametrized by binary session types can be created using {!modtype:Binary_process}. 
-    A pair of processes can only be run if they have compatible (dual) session types.    
+    A pair of processes can only be run if they have compatible (dual) session types.     
 
     @author essdotteedot [<essdotteedot[at]gmail[dot]com>]
     @version 0.1.0
