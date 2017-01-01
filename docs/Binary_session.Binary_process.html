@@ -36,48 +36,9 @@ The abstract type representing one end of a communication channel.<br>
 </div>
 
 
-<pre><span id="TYPEstop"><span class="keyword">type</span> <code class="type"></code>stop</span> </pre>
+<pre><span id="TYPEsession"><span class="keyword">type</span> <code class="type">([>  ], [>  ])</code> session</span> </pre>
 <div class="info ">
-The type representing the end of a communication protocol between two processes. 
-      <a href="Binary_session.Binary_process.html#TYPEstop"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.stop</code></a> is a dual of itself.<br>
-</div>
-
-
-<pre><span id="TYPEsend"><span class="keyword">type</span> <code class="type">'a</code> send</span> </pre>
-<div class="info ">
-The type representing a send operation in a communication protocol between two processes 
-      which has one process sending a value of type <code class="code"><span class="keywordsign">'</span>a</code> to the other process. 
-      <a href="Binary_session.Binary_process.html#TYPEsend"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.send</code></a> is a dual of <a href="Binary_session.Binary_process.html#TYPErecv"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.recv</code></a>.<br>
-</div>
-
-
-<pre><span id="TYPErecv"><span class="keyword">type</span> <code class="type">'a</code> recv</span> </pre>
-<div class="info ">
-The type representing a receive operation in a communication protocol between two processes 
-      which has one process receiving a value of type <code class="code"><span class="keywordsign">'</span>a</code> to the other process. 
-      <a href="Binary_session.Binary_process.html#TYPErecv"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.recv</code></a> is a dual of <a href="Binary_session.Binary_process.html#TYPEsend"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.send</code></a>.<br>
-</div>
-
-
-<pre><span id="TYPEchoice"><span class="keyword">type</span> <code class="type">('a, 'b)</code> choice</span> </pre>
-<div class="info ">
-The type representing an internal choice in a communication protocol between two processes.
-      <a href="Binary_session.Binary_process.html#TYPEchoice"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.choice</code></a> is a dual of <a href="Binary_session.Binary_process.html#TYPEoffer"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.offer</code></a>.<br>
-</div>
-
-
-<pre><span id="TYPEoffer"><span class="keyword">type</span> <code class="type">('a, 'b)</code> offer</span> </pre>
-<div class="info ">
-The type representing an external choice in a communication protocol between two processes.
-      <a href="Binary_session.Binary_process.html#TYPEoffer"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.offer</code></a> is a dual of <a href="Binary_session.Binary_process.html#TYPEchoice"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.choice</code></a>.<br>
-</div>
-
-
-<pre><span id="TYPEsession"><span class="keyword">type</span> <code class="type">('a, 'b)</code> session</span> </pre>
-<div class="info ">
-The type representing a communication protocol made up of a sequence of operations (<a href="Binary_session.Binary_process.html#TYPEstop"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.stop</code></a>, 
-      <a href="Binary_session.Binary_process.html#TYPEsend"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.send</code></a>, <a href="Binary_session.Binary_process.html#TYPErecv"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.recv</code></a>, 
-      <a href="Binary_session.Binary_process.html#TYPEchoice"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.choice</code></a>, <a href="Binary_session.Binary_process.html#TYPEoffer"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.offer</code></a>) between two processes. 
+The type representing a communication protocol made up of a sequence of operations between two processes. 
       The type <code class="code"><span class="keywordsign">'</span>a</code> is the sequence of operations from the point of view from the first process and <code class="code"><span class="keywordsign">'</span>b</code> 
       its dual is the sequence of operations from the point of view of the second process.<br>
 </div>
@@ -91,34 +52,30 @@ The type representing a process returning a value of type <code class="code"><sp
 </div>
 
 
-<pre><span id="VALsend"><span class="keyword">val</span> send</span> : <code class="type">'a -><br>       (unit,<br>        ('a <a href="Binary_session.Binary_process.html#TYPEsend">send</a> * 'b,<br>         'a <a href="Binary_session.Binary_process.html#TYPErecv">recv</a> * 'c)<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>        ('b, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
+<pre><span id="VALsend"><span class="keyword">val</span> send</span> : <code class="type">'a -><br>       (unit,<br>        ([ `Send of 'a * ([>  ] as 'b) ], [ `Recv of 'a * ([>  ] as 'c) ])<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>        ('b, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
 <code class="code">send v</code> creates a process which is capable of sending a value of type <code class="code"><span class="keywordsign">'</span>a</code> (<code class="code">v</code>) to the other process.<br>
 </div>
 
-<pre><span id="VALrecv"><span class="keyword">val</span> recv</span> : <code class="type">unit -><br>       ('a,<br>        ('a <a href="Binary_session.Binary_process.html#TYPErecv">recv</a> * 'b,<br>         'a <a href="Binary_session.Binary_process.html#TYPEsend">send</a> * 'c)<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>        ('b, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
+<pre><span id="VALrecv"><span class="keyword">val</span> recv</span> : <code class="type">unit -><br>       ('a,<br>        ([ `Recv of 'a * ([>  ] as 'b) ], [ `Send of 'a * ([>  ] as 'c) ])<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>        ('b, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
 <code class="code">recv ()</code> creates a process which is capable of receiving a value of type <code class="code"><span class="keywordsign">'</span>a</code> to the other process.<br>
 </div>
 
-<pre><span id="VALoffer"><span class="keyword">val</span> offer</span> : <code class="type">('e, ('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('e, ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('e,<br>        ((('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>          ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>         <a href="Binary_session.Binary_process.html#TYPEoffer">offer</a>,<br>         (('b, 'a) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>          ('d, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>         <a href="Binary_session.Binary_process.html#TYPEchoice">choice</a>)<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
+<pre><span id="VALoffer"><span class="keyword">val</span> offer</span> : <code class="type">('e, ([>  ] as 'a, [>  ] as 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('e, ([>  ] as 'c, [>  ] as 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('e,<br>        ([ `Offer of<br>             ('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> *<br>             ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> ],<br>         [ `Choice of<br>             ('b, 'a) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> *<br>             ('d, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> ])<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
 <code class="code">offer left_choice right_choice</code> creates a process which allows the other process to make a choice between
       two choices <code class="code">left_choice</code> and <code class="code">right_choice</code>.<br>
 </div>
 
-<pre><span id="VALchoose_left"><span class="keyword">val</span> choose_left</span> : <code class="type">('e, ('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('e,<br>        ((('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>          ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>         <a href="Binary_session.Binary_process.html#TYPEchoice">choice</a>,<br>         (('b, 'a) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>          ('d, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>         <a href="Binary_session.Binary_process.html#TYPEoffer">offer</a>)<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
+<pre><span id="VALchoose_left"><span class="keyword">val</span> choose_left</span> : <code class="type">('e, ([>  ] as 'a, [>  ] as 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('e,<br>        ([ `Choice of<br>             ('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> *<br>             ([>  ] as 'c, [>  ] as 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> ],<br>         [ `Offer of<br>             ('b, 'a) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> *<br>             ('d, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> ])<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
 <code class="code">choose_left left_choice</code> creates a process which internally chooses <code class="code">left_choice</code> and communicates this choice
       to the other process.<br>
 </div>
 
-<pre><span id="VALchoose_right"><span class="keyword">val</span> choose_right</span> : <code class="type">('e, ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('e,<br>        ((('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>          ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>         <a href="Binary_session.Binary_process.html#TYPEchoice">choice</a>,<br>         (('b, 'a) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>          ('d, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>         <a href="Binary_session.Binary_process.html#TYPEoffer">offer</a>)<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
+<pre><span id="VALchoose_right"><span class="keyword">val</span> choose_right</span> : <code class="type">('e, ([>  ] as 'a, [>  ] as 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('e,<br>        ([ `Choice of<br>             ([>  ] as 'c, [>  ] as 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> *<br>             ('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> ],<br>         [ `Offer of<br>             ('d, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> *<br>             ('b, 'a) <a href="Binary_session.Binary_process.html#TYPEsession">session</a> ])<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, 'f)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
 <code class="code">choose_right right_choice</code> creates a process which internally chooses <code class="code">rigth_choice</code> and communicates this choice
       to the other process.<br>
 </div>
 
-<pre><span id="VALjump"><span class="keyword">val</span> jump</span> : <code class="type">unit -><br>       (unit, ('a, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>,<br>        ('c, 'd) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
-<code class="code">jump ()</code> jump to another session<br>
-</div>
-
-<pre><span id="VALstop"><span class="keyword">val</span> stop</span> : <code class="type">'a -><br>       ('a,<br>        (<a href="Binary_session.Binary_process.html#TYPEstop">stop</a>, <a href="Binary_session.Binary_process.html#TYPEstop">stop</a>)<br>        <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
+<pre><span id="VALstop"><span class="keyword">val</span> stop</span> : <code class="type">'a -><br>       ('a, ([ `Stop ], [ `Stop ]) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a></code></pre><div class="info ">
 <code class="code">stop v</code> creates a process which stops (is not capable of performing any further operations) and returns a 
       value v.<br>
 </div>
@@ -135,7 +92,7 @@ The type representing a process returning a value of type <code class="code"><sp
 <code class="code">p1 &gt;&gt;= f</code> creates a process which is the composition of running <code class="code">p1</code> then applying.<br>
 </div>
 
-<pre><span id="VALrun_processes"><span class="keyword">val</span> run_processes</span> : <code class="type">('a, ('b, 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('d, ('c, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ((unit -> 'a <a href="Binary_session.Binary_process.html#TYPEio">io</a>) *<br>        (unit -> 'd <a href="Binary_session.Binary_process.html#TYPEio">io</a>))<br>       <a href="Binary_session.Binary_process.html#TYPEio">io</a></code></pre><div class="info ">
+<pre><span id="VALrun_processes"><span class="keyword">val</span> run_processes</span> : <code class="type">('a, ([>  ] as 'b, [>  ] as 'c) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ('d, ('c, 'b) <a href="Binary_session.Binary_process.html#TYPEsession">session</a>, unit)<br>       <a href="Binary_session.Binary_process.html#TYPEprocess">process</a> -><br>       ((unit -> 'a <a href="Binary_session.Binary_process.html#TYPEio">io</a>) *<br>        (unit -> 'd <a href="Binary_session.Binary_process.html#TYPEio">io</a>))<br>       <a href="Binary_session.Binary_process.html#TYPEio">io</a></code></pre><div class="info ">
 <code class="code">run_process p1 p2</code> will run two processes <code class="code">p1</code> and <code class="code">p2</code> which have dual session types and which have
       <code class="code">unit</code> as their end state capabilities (i.e., are complete processes). The result is a 
       <a href="Binary_session.IO.html#TYPEt"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span>.t</code></a> returning a pair of functions which may be invoked to run each process.

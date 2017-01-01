@@ -13,77 +13,67 @@
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;io<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;chan_endpoint<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;stop<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;send<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;recv<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;choice<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;offer<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;session&nbsp;<span class="keyword">constraint</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;=&nbsp;[&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">constraint</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;=&nbsp;[&gt;&nbsp;&nbsp;]<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;send&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(unit,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.send&nbsp;*&nbsp;<span class="keywordsign">'</span>b,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.recv&nbsp;*&nbsp;<span class="keywordsign">'</span>c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([&nbsp;<span class="keywordsign">`</span><span class="constructor">Send</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;*&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;],&nbsp;[&nbsp;<span class="keywordsign">`</span><span class="constructor">Recv</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;*&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>c)&nbsp;])<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;recv&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.recv&nbsp;*&nbsp;<span class="keywordsign">'</span>b,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.send&nbsp;*&nbsp;<span class="keywordsign">'</span>c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([&nbsp;<span class="keywordsign">`</span><span class="constructor">Recv</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;*&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;],&nbsp;[&nbsp;<span class="keywordsign">`</span><span class="constructor">Send</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;*&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>c)&nbsp;])<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;offer&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;<span class="keywordsign">'</span>f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;[&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;<span class="keywordsign">'</span>f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>c,&nbsp;[&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(((<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.offer,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.choice)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([&nbsp;<span class="keywordsign">`</span><span class="constructor">Offer</span>&nbsp;<span class="keyword">of</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<span class="keywordsign">`</span><span class="constructor">Choice</span>&nbsp;<span class="keyword">of</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;])<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;<span class="keywordsign">'</span>f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;choose_left&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;<span class="keywordsign">'</span>f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;[&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(((<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.choice,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.offer)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([&nbsp;<span class="keywordsign">`</span><span class="constructor">Choice</span>&nbsp;<span class="keyword">of</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>c,&nbsp;[&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<span class="keywordsign">`</span><span class="constructor">Offer</span>&nbsp;<span class="keyword">of</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;])<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;<span class="keywordsign">'</span>f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;choose_right&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;<span class="keywordsign">'</span>f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>a,&nbsp;[&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>e,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(((<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.choice,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.offer)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([&nbsp;<span class="keywordsign">`</span><span class="constructor">Choice</span>&nbsp;<span class="keyword">of</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>c,&nbsp;[&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<span class="keywordsign">`</span><span class="constructor">Offer</span>&nbsp;<span class="keyword">of</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session&nbsp;])<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;<span class="keywordsign">'</span>f)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;jump&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(unit,&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stop&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.stop,&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.stop)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;unit)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;([&nbsp;<span class="keywordsign">`</span><span class="constructor">Stop</span>&nbsp;],&nbsp;[&nbsp;<span class="keywordsign">`</span><span class="constructor">Stop</span>&nbsp;])&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;unit)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lift_io&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.io&nbsp;<span class="keywordsign">-&gt;</span><br>
@@ -94,7 +84,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>e)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process)&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>e)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;run_processes&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;(<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;unit)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;([&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>b,&nbsp;[&gt;&nbsp;&nbsp;]&nbsp;<span class="keyword">as</span>&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>d,&nbsp;(<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.session,&nbsp;unit)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Binary_process</span>.process&nbsp;<span class="keywordsign">-&gt;</span><br>

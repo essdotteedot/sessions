@@ -51,37 +51,8 @@ module type Binary_process = sig
   type chan_endpoint
   (** The abstract type representing one end of a communication channel. *)
 
-  type stop
-  (** The type representing the end of a communication protocol between two processes. 
-      {!type:Binary_session.Binary_process.stop} is a dual of itself.
-  *)
-
-  type 'a send
-  (** The type representing a send operation in a communication protocol between two processes 
-      which has one process sending a value of type ['a] to the other process. 
-      {!type:Binary_session.Binary_process.send} is a dual of {!type:Binary_session.Binary_process.recv}.
-  *)
-
-  type 'a recv
-  (** The type representing a receive operation in a communication protocol between two processes 
-      which has one process receiving a value of type ['a] to the other process. 
-      {!type:Binary_session.Binary_process.recv} is a dual of {!type:Binary_session.Binary_process.send}.
-  *)
-
-  type ('a,'b) choice
-  (** The type representing an internal choice in a communication protocol between two processes.
-      {!type:Binary_session.Binary_process.choice} is a dual of {!type:Binary_session.Binary_process.offer}.
-  *)
-
-  type ('a,'b) offer
-  (** The type representing an external choice in a communication protocol between two processes.
-      {!type:Binary_session.Binary_process.offer} is a dual of {!type:Binary_session.Binary_process.choice}.
-  *)
-
-  type ('a,'b) session
-  (** The type representing a communication protocol made up of a sequence of operations ({!type:Binary_session.Binary_process.stop}, 
-      {!type:Binary_session.Binary_process.send}, {!type:Binary_session.Binary_process.recv}, 
-      {!type:Binary_session.Binary_process.choice}, {!type:Binary_session.Binary_process.offer}) between two processes. 
+  type ('a,'b) session constraint 'a = [>] constraint 'b = [>]
+  (** The type representing a communication protocol made up of a sequence of operations between two processes. 
       The type ['a] is the sequence of operations from the point of view from the first process and ['b] 
       its dual is the sequence of operations from the point of view of the second process.
   *)
@@ -92,34 +63,31 @@ module type Binary_process = sig
       in ['b]. 
   *)
 
-  val send : 'a -> (unit, ('a send * 'b, 'a recv * 'c) session, ('b, 'c) session) process
+  val send : 'a -> (unit,([`Send of 'a * 'b], [`Recv of 'a * 'c]) session, ('b,'c) session) process
   (** [send v] creates a process which is capable of sending a value of type ['a] ([v]) to the other process. *)
 
-  val recv : unit -> ('a, ('a recv * 'b, 'a send * 'c) session, ('b, 'c) session) process
+  val recv : unit -> ('a,([`Recv of 'a * 'b], [`Send of 'a * 'c]) session, ('b,'c) session) process
   (** [recv ()] creates a process which is capable of receiving a value of type ['a] to the other process. *)
 
   val offer : ('e,('a, 'b) session,'f) process -> ('e,('c, 'd) session,'f) process -> 
-    ('e,((('a, 'b) session, ('c, 'd) session) offer, (('b, 'a) session,('d, 'c) session) choice) session,'f) process 
+    ('e,([`Offer of (('a, 'b) session * ('c, 'd) session)], [`Choice of (('b, 'a) session * ('d, 'c) session)]) session,'f) process 
   (** [offer left_choice right_choice] creates a process which allows the other process to make a choice between
       two choices [left_choice] and [right_choice].
   *)
 
   val choose_left : ('e,('a, 'b) session,'f) process ->
-    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process
+    ('e,([`Choice of (('a, 'b) session * ('c, 'd) session)], [`Offer of (('b, 'a) session * ('d, 'c) session)]) session,'f) process
   (** [choose_left left_choice] creates a process which internally chooses [left_choice] and communicates this choice
       to the other process.
   *)
 
   val choose_right : ('e,('c, 'd) session,'f) process ->
-    ('e,((('a, 'b) session, ('c, 'd) session) choice, (('b, 'a) session,('d, 'c) session) offer) session,'f) process
+    ('e,([`Choice of (('a, 'b) session * ('c, 'd) session)], [`Offer of (('b, 'a) session * ('d, 'c) session)]) session,'f) process
   (** [choose_right right_choice] creates a process which internally chooses [rigth_choice] and communicates this choice
       to the other process.
   *)
 
-  val jump : unit -> (unit,('a,'b) session,('c,'d) session) process
-  (** [jump ()] jump to another session *)
-
-  val stop : 'a -> ('a, (stop,stop) session, unit) process
+  val stop : 'a -> ('a,([`Stop], [`Stop]) session, unit) process
   (** [stop v] creates a process which stops (is not capable of performing any further operations) and returns a 
       value v.
   *)

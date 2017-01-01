@@ -85,7 +85,6 @@ let rec print_server () = BP.(
       (
         recv () >>= fun (s : string) ->
         lift_io (Lwt_io.printlf "print server : %s" s) >>=
-        jump >>=
         print_server
       )
   )  
@@ -99,7 +98,7 @@ let rec print_client (i : int) = BP.(
   lift_io (Lwt_io.read_line Lwt_io.stdin) >>= fun (s : string) ->
   if s = "q"
   then choose_right (send (Printf.sprintf "Total lines printed : %d" (i+1)) >>= fun () -> choose_left (stop ()))
-  else choose_right (send s >>= jump >>= fun () -> print_client (i+1))
+  else choose_right (send s >>= fun () -> print_client (i+1))
 )  
 
 let () = Lwt_main.run (
