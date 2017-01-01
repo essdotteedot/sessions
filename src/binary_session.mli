@@ -16,8 +16,8 @@
 
     The following operations are duals of each other :
     - [[`Stop]], [[`Stop]]
-    - [['Send of 'a * 'b]], [[`Recv of 'a * 'b]], where ['b] is a session type
-    - [[ `Offer of ('a, 'b) session * ('c, 'd) session ], [ `Choice of ('b, 'a) session * ('d, 'c) session ]],
+    - [[`Send of 'a * 'b]], [[`Recv of 'a * 'b]], where ['b] is a session type
+    - [[`Offer of ('a, 'b) session * ('c, 'd) session ], [ `Choice of ('b, 'a) session * ('d, 'c) session ]],
       where ['a], ['b], ['c], ['d] are session types   
 
     Here are some examples of processes which are duals (assume we have an implementation of {!modtype:IO} called ExIO) :
