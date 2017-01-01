@@ -73,7 +73,14 @@ let rec print_client (i : int) = BP.(
   else choose_right (send s >>= fun () -> print_client (i+1))
 ) 
 
-let _ = BP.run_processes print_server (print_client 0)           
+let () = Lwt_main.run (
+    Lwt.(   
+      BP.run_processes print_server (print_client 1) >>= fun (vm_fn,client_fn) ->
+      async vm_fn ;
+      client_fn () >>= fun _ ->
+      return ()
+    )
+  )
 ```    
 Documentation
 -------------
