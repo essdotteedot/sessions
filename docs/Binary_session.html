@@ -30,6 +30,73 @@ This module provides modules to create binary sessions types for statically veri
 <b>Version:</b> 0.1.0<br>
 </div>
 <hr width="100%">
+<br>
+A session type <code class="code">(<span class="keywordsign">'</span>a,<span class="keywordsign">'</span>b) session</code> represents a protocol that a particular process carries out. Here
+    <code class="code"><span class="keywordsign">'</span>a</code> and <code class="code"><span class="keywordsign">'</span>b</code> are duals of each other. 
+<p>
+
+    A process <code class="code">(<span class="keywordsign">'</span>a,<span class="keywordsign">'</span>b,<span class="keywordsign">'</span>c) process</code> is parameterized by a starting session type <code class="code"><span class="keywordsign">'</span>b</code>, <code class="code"><span class="keywordsign">'</span>a</code> is it's return value and <code class="code"><span class="keywordsign">'</span>c</code> is it's final
+    session type. Two processes can be run only if they have dual initial session types a final session type of <code class="code">unit</code>.
+<p>
+
+    The following operations are duals of each other :<ul>
+<li><code class="code">[<span class="keywordsign">`</span><span class="constructor">Stop</span>]</code>, <code class="code">[<span class="keywordsign">`</span><span class="constructor">Stop</span>]</code></li>
+<li><code class="code">[<span class="keywordsign">'</span><span class="constructor">Send</span> <span class="keyword">of</span> <span class="keywordsign">'</span>a * <span class="keywordsign">'</span>b]</code>, <code class="code">[<span class="keywordsign">`</span><span class="constructor">Recv</span> <span class="keyword">of</span> <span class="keywordsign">'</span>a * <span class="keywordsign">'</span>b]</code>, where <code class="code"><span class="keywordsign">'</span>b</code> is a session type</li>
+<li><code class="code">[ <span class="keywordsign">`</span><span class="constructor">Offer</span> <span class="keyword">of</span> (<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b) session * (<span class="keywordsign">'</span>c, <span class="keywordsign">'</span>d) session ], [ <span class="keywordsign">`</span><span class="constructor">Choice</span> <span class="keyword">of</span> (<span class="keywordsign">'</span>b, <span class="keywordsign">'</span>a) session * (<span class="keywordsign">'</span>d, <span class="keywordsign">'</span>c) session ]</code>,
+      where <code class="code"><span class="keywordsign">'</span>a</code>, <code class="code"><span class="keywordsign">'</span>b</code>, <code class="code"><span class="keywordsign">'</span>c</code>, <code class="code"><span class="keywordsign">'</span>d</code> are session types   </li>
+</ul>
+
+    Here are some examples of processes which are duals (assume we have an implementation of <a href="Binary_session.IO.html"><code class="code"><span class="constructor">Binary_session</span>.<span class="constructor">IO</span></code></a> called ExIO) :
+<p>
+
+    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">BP</span>&nbsp;=&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Make</span>&nbsp;(<span class="constructor">ExIO</span>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;send_str_recv_int_stop&nbsp;=&nbsp;<span class="constructor">BP</span>.(send&nbsp;<span class="string">"hello"</span>&nbsp;&gt;&gt;=&nbsp;<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;recv&nbsp;()&nbsp;&gt;&gt;=&nbsp;<span class="keyword">fun</span>&nbsp;(i&nbsp;:&nbsp;int)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;stop&nbsp;())&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;recv_str_send_int_stop&nbsp;=&nbsp;<span class="constructor">BP</span>.(recv&nbsp;()&nbsp;&gt;&gt;=&nbsp;<span class="keyword">fun</span>&nbsp;(s&nbsp;:&nbsp;string)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;send&nbsp;1&nbsp;&gt;&gt;=&nbsp;<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;stop&nbsp;())&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;_&nbsp;=&nbsp;<span class="constructor">BP</span>.run_processes&nbsp;send_str_recv_int_stop&nbsp;recv_str_send_int_stop<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code></pre>
+<p>
+
+    Note that the session type associated with the process <code class="code">send_str_recv_int_stop</code> was inferred as 
+<p>
+
+    <code class="code">([ <span class="keywordsign">`</span><span class="constructor">Send</span> <span class="keyword">of</span> string * [ <span class="keywordsign">`</span><span class="constructor">Recv</span> <span class="keyword">of</span> int * [ <span class="keywordsign">`</span><span class="constructor">Stop</span> ] ] ],[ <span class="keywordsign">`</span><span class="constructor">Recv</span> <span class="keyword">of</span> string * [ <span class="keywordsign">`</span><span class="constructor">Send</span> <span class="keyword">of</span> int * [ <span class="keywordsign">`</span><span class="constructor">Stop</span> ] ] ]) <span class="constructor">BP</span>.session</code>
+<p>
+
+    as you can see it provides it's own session type <code class="code">[ <span class="keywordsign">`</span><span class="constructor">Send</span> <span class="keyword">of</span> string * [ <span class="keywordsign">`</span><span class="constructor">Recv</span> <span class="keyword">of</span> int * [ <span class="keywordsign">`</span><span class="constructor">Stop</span> ] ] ]</code> as well as it's
+    dual <code class="code">[ <span class="keywordsign">`</span><span class="constructor">Recv</span> <span class="keyword">of</span> string * [ <span class="keywordsign">`</span><span class="constructor">Send</span> <span class="keyword">of</span> int * [ <span class="keywordsign">`</span><span class="constructor">Stop</span> ] ] ]</code>. 
+<p>
+
+    The session type associated with the process <code class="code">recv_str_send_int_stop</code> is 
+    <code class="code">([ <span class="keywordsign">`</span><span class="constructor">Recv</span> <span class="keyword">of</span> string * [ <span class="keywordsign">`</span><span class="constructor">Send</span> <span class="keyword">of</span> int * [ <span class="keywordsign">`</span><span class="constructor">Stop</span> ] ] ], [ <span class="keywordsign">`</span><span class="constructor">Send</span> <span class="keyword">of</span> string * [ <span class="keywordsign">`</span><span class="constructor">Recv</span> <span class="keyword">of</span> int * [ <span class="keywordsign">`</span><span class="constructor">Stop</span> ] ] ]) <span class="constructor">BP</span>.session</code>
+<p>
+
+    we see that it indeed has the dual of <code class="code">send_str_recv_int_stop</code> which means that 
+    <code class="code"><span class="constructor">BP</span>.run_processes send_str_recv_int_stop recv_str_send_int_stop</code> can type check.
+<p>
+
+    If these two processes were to differ in such a way that they were not duals then 
+    <code class="code"><span class="constructor">BP</span>.run_processes send_str_recv_int_stop recv_str_send_int_stop</code> would not type check.
+<p>
+
+    Here is another example using <code class="code"><span class="keywordsign">`</span><span class="constructor">Offer</span></code> and <code class="code"><span class="keywordsign">`</span><span class="constructor">Choice</span></code> as well as recursion. 
+<p>
+
+    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">BP</span>&nbsp;=&nbsp;<span class="constructor">Binary_session</span>.<span class="constructor">Make</span>&nbsp;(<span class="constructor">ExIO</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;print_server&nbsp;()&nbsp;=&nbsp;<span class="constructor">BP</span>.(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offer&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stop&nbsp;())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recv&nbsp;()&nbsp;&gt;&gt;=&nbsp;<span class="keyword">fun</span>&nbsp;(s&nbsp;:&nbsp;string)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lift_io&nbsp;(<span class="constructor">Lwt_io</span>.printlf&nbsp;<span class="string">"print&nbsp;server&nbsp;:&nbsp;%s"</span>&nbsp;s)&nbsp;&gt;&gt;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_server)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;print_client&nbsp;(i&nbsp;:&nbsp;int)&nbsp;=&nbsp;<span class="constructor">BP</span>.(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lift_io&nbsp;(<span class="constructor">Lwt_io</span>.read_line&nbsp;<span class="constructor">Lwt_io</span>.stdin)&nbsp;&gt;&gt;=&nbsp;<span class="keyword">fun</span>&nbsp;(s&nbsp;:&nbsp;string)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;s&nbsp;=&nbsp;<span class="string">"q"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;choose_right&nbsp;(send&nbsp;(<span class="constructor">Printf</span>.sprintf&nbsp;<span class="string">"Total&nbsp;lines&nbsp;printed&nbsp;:&nbsp;%d"</span>&nbsp;(i+1))&nbsp;&gt;&gt;=&nbsp;<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;choose_left&nbsp;(stop&nbsp;()))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;choose_right&nbsp;(send&nbsp;s&nbsp;&gt;&gt;=&nbsp;<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print_client&nbsp;(i+1))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;_&nbsp;=&nbsp;<span class="constructor">BP</span>.run_processes&nbsp;print_server&nbsp;(print_client&nbsp;0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code></pre><br>
 
 <pre><span class="keyword">module type</span> <a href="Binary_session.IO.html">IO</a> = <code class="code"><span class="keyword">sig</span></code> <a href="Binary_session.IO.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Abstract type which can perform monadic concurrent IO.
