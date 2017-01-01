@@ -75,8 +75,8 @@ let rec print_client (i : int) = BP.(
 
 let () = Lwt_main.run (
     Lwt.(   
-      BP.run_processes print_server (print_client 1) >>= fun (vm_fn,client_fn) ->
-      async vm_fn ;
+      BP.run_processes print_server (print_client 1) >>= fun (server_fn,client_fn) ->
+      async server_fn ;
       client_fn () >>= fun _ ->
       return ()
     )
